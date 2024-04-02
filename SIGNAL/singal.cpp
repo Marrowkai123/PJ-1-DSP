@@ -244,6 +244,25 @@ vector<pair<int, double>> convolution(const vector<pair<int, double>>& signal1, 
 
     return result;
 }
+vector<std::pair<int, double>> subtractAudio(const vector<pair<int, double>>& signal1, const vector<pair<int, double>>& signal2) {
+
+    if (audio1.size() != audio2.size()) {
+        std::cerr << "Error: The two audio signals have different lengths." << endl;
+        return vector<pair<int, double>>();
+    }
+
+    std::vector<pair<int, double>> result(signal1.size());
+
+    for (size_t i = 0; i < audio1.size(); ++i) {
+        if (signal1[i].first != signal2[i].first) {
+            std::cerr << "Error: Audio samples at different time points." << std::endl;
+            return vector<pair<int, double>>();
+        }
+        result[i] = {signal1[i].first, signal1[i].second - signal2[i].second};
+    }
+
+    return result;
+}
 
 
 
@@ -293,6 +312,8 @@ int main() {
 	
 //	finalSignal = upsample(waveform, 2);
 
+	finalSignal = subtractAudio(waveformA, waveformB);
+
 	finalSignal = convolution(waveformA,waveformB);
 	
  	writeToFile("convolution.txt", finalSignal);
@@ -301,10 +322,10 @@ int main() {
     cout << "Updated " << filename << endl;
     
     //Neu gap loi "'gnuplot' is not recognized as an internal or external command" 
-    //Mo Control Panel trÍn Windows v‡ di den System and Security > System > Advanced system settings.
-	//Trong hop thoai System Properties, chon tab Advanced, v‡ nhap v‡o n˙t Environment Variables.
-	//Trong phan System Variables, tÏm bien mÙi tru?ng cÛ ten PATH v‡ chon Edit.
-	//ThÍm duung dan den thu muc c‡i dat Gnuplot v‡o cuoi bien PATH (C:\Program Files\gnuplot\bin).
+    //Mo Control Panel tr√™n Windows v√† di den System and Security > System > Advanced system settings.
+	//Trong hop thoai System Properties, chon tab Advanced, v√† nhap v√†o n√∫t Environment Variables.
+	//Trong phan System Variables, t√¨m bien m√¥i tru?ng c√≥ ten PATH v√† chon Edit.
+	//Th√™m duung dan den thu muc c√†i dat Gnuplot v√†o cuoi bien PATH (C:\Program Files\gnuplot\bin).
 	//Nhap OK de luu thay doi 
 	
     // Dong lenh nay dung de hien plot sau khi chay ct ma khong can mo gnuplot
